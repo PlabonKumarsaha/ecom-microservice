@@ -6,20 +6,23 @@ import java.util.concurrent.CompletableFuture;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
+
+@RestController
+@RequestMapping("api/order")
 public class OrderController {
 
-  OrderService orderService;
+  private final OrderService orderService;
+
+  public OrderController(OrderService orderService) {
+    this.orderService = orderService;
+  }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public CompletableFuture<String> placeOrder(@RequestBody OrderRequest orderRequest) {
-    //return CompletableFuture.supplyAsync(() -> orderService.placeOrder(orderRequest));
-    return null;
+  public String placeOrder(@RequestBody OrderRequest orderRequest) {
+    orderService.placeOrder(orderRequest);
+    return "Oder Placed sucessfully";
   }
 }

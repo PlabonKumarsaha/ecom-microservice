@@ -7,6 +7,7 @@ import com.pks.orderservice.entity.OrderLineItems;
 import com.pks.orderservice.repository.OrderRepository;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,9 @@ public class OrderService {
     order.setOrderNumber(UUID.randomUUID().toString());
 
     List<OrderLineItems> orderLineItemsList;
-    orderLineItemsList = (List<OrderLineItems>) orderRequest.getOrderLineItemsDtoList()
+    orderLineItemsList = orderRequest.getOrderLineItemsDtoList()
         .stream()
-        .map(this::mapToDto);
+        .map(this::mapToDto).collect(Collectors.toList());
     order.setOrderLineItemsList(orderLineItemsList);
     orderRepository.save(order);
   }
